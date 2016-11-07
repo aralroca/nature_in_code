@@ -1,2 +1,4 @@
-# nature_in_code
-Nature in Code; notes and exercises
+# Nature in Code
+
+Nature in Code; notes and exercises of edX Course.
+
