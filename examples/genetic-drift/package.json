@@ -1,45 +1,55 @@
 {
-    "name": "es6-webpack-boilerplate",
-    "version": "0.0.1",
-    "description": "Boilerplate for es6 and webpack",
-    "main": "index.js",
-    "scripts": {
-        "start": "script/build",
-        "serve": "script/watch",
-        "test": "jest",
-        "build": "npm start"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/aralroca/nature_in_code.git"
-    },
-    "keywords": [
-        "babel",
-        "es6",
-        "webpack",
-        "boilerplate"
+  "name": "es6-webpack-boilerplate",
+  "version": "0.0.1",
+  "description": "Boilerplate for es6 and webpack",
+  "main": "index.js",
+  "scripts": {
+    "start": "script/build",
+    "serve": "script/watch",
+    "test": "jest",
+    "build": "npm start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aralroca/nature_in_code.git"
+  },
+  "keywords": [
+    "babel",
+    "es6",
+    "webpack",
+    "boilerplate"
+  ],
+  "author": "Aral Roca",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/aralroca/nature_in_code"
+  },
+  "homepage": "https://github.com/aralroca/nature_in_code",
+  "devDependencies": {
+    "babel-core": "^4.4.3",
+    "babel-jest": "^4.0.0",
+    "babel-loader": "^4.0.0",
+    "babelify": "^5.0.3",
+    "es6ify": "^1.6.0",
+    "jest": "^0.1.37",
+    "jshint": "^2.6.3",
+    "jshint-loader": "^0.8.3",
+    "uglify-js": "^2.4.16",
+    "webpack": "^1.5.3"
+  },
+  "jest": {
+    "scriptPreprocessor": "./node_modules/babel-jest",
+    "testFileExtensions": [
+      "es6",
+      "js"
     ],
-    "author": "Aral Roca",
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/aralroca/nature_in_code"
-    },
-    "homepage": "https://github.com/aralroca/nature_in_code",
-    "devDependencies": {
-        "babel-core": "^4.4.3",
-        "babel-jest": "^4.0.0",
-        "babel-loader": "^4.0.0",
-        "babelify": "^5.0.3",
-        "es6ify": "^1.6.0",
-        "jest": "^0.1.37",
-        "jshint": "^2.6.3",
-        "jshint-loader": "^0.8.3",
-        "uglify-js": "^2.4.16",
-        "webpack": "^1.5.3"
-    },
-    "jest": {
-        "scriptPreprocessor": "./node_modules/babel-jest",
-        "testFileExtensions": ["es6", "js"],
-        "moduleFileExtensions": ["js", "json", "es6"]
-    }
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "es6"
+    ]
+  },
+  "dependencies": {
+    "d3": "^4.3.0"
+  }
 }
