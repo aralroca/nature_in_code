@@ -5,6 +5,7 @@ let grid;
 let tempGrid = [];
 const beta = 0.05;
 const gamma = 0.1;
+const numberOfSimulations = 100;
 
 const getRandomInt = (min, max) =>
   Math.floor(Math.random() * (max - min + 1)) + min;
@@ -43,7 +44,11 @@ const exposeNeighbors = (i, ii) => {
   for (var n_i = i - 1; n_i <= i + 1; n_i = n_i + 1) {
     for (var n_ii = ii - 1; n_ii <= ii + 1; n_ii = n_ii + 1) {
       if (n_i !== i || n_ii !== ii) {
-        tryInfection(getBoundedIndex(n_i), getBoundedIndex(n_ii));
+        if (Math.random < 0.01) {
+          tryInfection(getRandomInt(0, gridLength - 1), getRandomInt(0, gridLength - 1));
+        } else {
+          tryInfection(getBoundedIndex(n_i), getBoundedIndex(n_ii));
+        }
       }
     }
   }
@@ -71,8 +76,33 @@ const runTimeStep = () => {
   }
 };
 
-initGrid();
+const getNumberInState = state => () =>
+  grid
+    .map(x => x.filter(xx => xx === state).length)
+    .reduce((a, b) => a + b, 0);
 
+const getNumberOfInfected = getNumberInState('I');
+const getNumberOfSusceptibles = getNumberInState('S');
+const getNumberOfRecovered = getNumberInState('R');
+
+/**
+ * Run simulation
+ */
+const runSimulation = () => {
+  initGrid();
+
+  while (getNumberOfInfected() > 0) {
+    runTimeStep();
+  }
+};
+
+// const data = Array(numberOfSimulations).fill(1)
+//   .map(x => {
+//     runSimulation();
+//     return getNumberOfRecovered();
+//   });
+
+// console.log(data.reduce((a,b) => a + b, 0) / data.length);
 drawGrid(grid, ["S", "#dcdcdc", "I", "#c82605", "R", "#6fc041"]);
 
 setInterval(() => {
