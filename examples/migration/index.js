@@ -1,3 +1,4 @@
+
 import { drawGrid, updateGrid } from './lib/visualize.js';
 
 /**
@@ -6,8 +7,7 @@ import { drawGrid, updateGrid } from './lib/visualize.js';
 const gridLength = 100;
 let grid;
 let p = 0.5;
-const maxMatingDistance = 1;
-let generator_counter = 0;
+const maxMatingDistance = 50; 
 
 /**
  * Init grid
@@ -17,10 +17,10 @@ const initGrid = () => {
     .fill(1)
     .map(x => Array(gridLength).fill(1)
       .map(() => {
-        const x = Math.random();
-        if (x < p * p) return 'A1A1';
-        if (x > 1 - (1 - p) * (1 - p)) return 'A2A2';
-        else return 'A1A2';
+        const x = Math.random(); 
+        if (x < p * p) return 'A1A1';  
+        if (x > 1 - (1 - p) * (1 - p)) return 'A2A2'; 
+        else return 'A1A2'; 
       }));
 };
 
@@ -29,10 +29,11 @@ const initGrid = () => {
  */
 const pickMatingPartner = (i, ii) => {
   const getBoundedIndex = i => {
-    if (i < 0) return i + gridLength;
-    else if (i >= gridLength) return i - gridLength;
+    if (i < 0) return i + gridLength; 
+    else if (i >= gridLength) return i - gridLength; 
     else return i;
   };
+
   const getRandomIndex = (min, max) => getBoundedIndex(Math.floor(Math.random() * (max - min + 1)) + min);
 
   const j = getRandomIndex(i - maxMatingDistance, i + maxMatingDistance);
@@ -48,9 +49,9 @@ const pickMatingPartner = (i, ii) => {
 * @return String
 */
 const getOffstring = (p1, p2) => {
-  if (p1 === 'A1A1' && p2 === 'A1A1') return 'A1A1';
+  if (p1 === 'A1A1' && p2 === 'A1A1') return 'A1A1'; 
   if (p1 === 'A1A1' && p2 === 'A1A2' || p2 === 'A1A1' && p1 === 'A1A2')
-    return Math.random() < 0.5 ? 'A1A1' : 'A1A2';
+    return Math.random() < 0.5 ? 'A1A1' : 'A1A2'; 
   if (p1 === 'A1A1' && p2 === 'A2A2' || p2 === 'A1A1' && p1 === 'A2A2')
     return 'A1A2';
   if (p1 === 'A1A2' && p2 === 'A1A2') {
@@ -61,7 +62,7 @@ const getOffstring = (p1, p2) => {
   }
   if (p1 === 'A2A2' && p2 === 'A1A2' || p2 === 'A2A2' && p1 === 'A1A2')
     return Math.random() < 0.5 ? 'A2A2' : 'A1A2';
-  if (p1 === 'A2A2' && p2 === 'A2A2') return 'A2A2';
+  if (p1 === 'A2A2' && p2 === 'A2A2') return 'A2A2'; 
 };
 
 /**
@@ -73,29 +74,6 @@ const runGeneration = () => {
   let tempGrid = arrayGrid.map((x, i) => arrayGrid.map((xx, ii) => getOffstring(grid[i][ii], pickMatingPartner(i, ii))));
 
   tempGrid.forEach((x, i) => x.forEach((xx, ii) => grid[i][ii] = xx));
-};
-
-const printData = ()  => {
-  let a1a1 = 0;
-  let a2a2 = 0;
-  let a1a2 = 0;
-
-  grid.forEach(x => x.forEach(y => {
-    if (y === 'A1A1') a1a1++;
-    else if (y === 'A2A2') a2a2++;
-    else a1a2++;
-  }));
-
-  console.log('A1A1', a1a1);
-  console.log('A2A2', a2a2);
-  console.log('A1A2', a1a2);
-  const N = a1a1 + a1a2 + a2a2;
-  const Ho = a1a2 / N;
-  const p = ((2 * a1a1) + a1a2) / (2 * N);
-  const He = 2 * p * (1 - p);
-  const F = (He - Ho) / He;
-
-  console.log('F', F);
 };
 
 initGrid();

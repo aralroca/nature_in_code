@@ -1,46 +1,25 @@
+
 import { drawLineChart } from './lib/visualize.js';
 
-const generations = 4000; // Increment *10 generations
-const sh = 0.2;
-const sp = 0.5; 
+const N = 1000; 
+const generations = 4000; 
+const simulations = 10; 
+const p = 0.02; 
 
-/**
- * Selection (Host or Parasite)
- */
-function selection(firstFreq, secondFreq, isHost = false) {
-  const sum = (a, b) => a + b;
-  const hostFit = i => (p, ii) => (i === ii ? 1-sh : 1) * p;
-	const parasitFit = i => (h, ii) => (i === ii ? 1 : 1-sp) * h;
-  const calcFit = i => (x, ii) => isHost? hostFit(i)(x, ii): parasitFit(i)(x, ii);
-  const noise = Math.random() * 0.01; // Add NOISE
+const nextGeneration = n => p => Array(n * 2).fill(1)
+  .map(() => Math.random() < p * 1.01)
+  .filter(a1 => a1).length / (n * 2);
 
-	const newFrequencies = firstFreq.map((x, i) =>
-       x * secondFreq.map(calcFit(i)).reduce(sum, 0)+ noise); //Add NOISE
+const getSimulation = () => {
+  const nextGenerationKIndividuals = nextGeneration(N);
+  const simulation = Array(generations).fill(1);
 
-  const sumFrequencies = newFrequencies.reduce(sum, 0);
+  simulation.forEach((x, i, a) =>  a[i] = nextGenerationKIndividuals(a[i-1] || p));
+  return simulation;
+};
 
-	return newFrequencies.map(x => x / sumFrequencies);
-}
+const harmonicMean = array => Math.round(array.length / array.map(num => 1/num).reduce((a, b) => a+b));
 
-/**
- *  Visualization
- */
-function runVisualization() {
-  const tmpData = Array(generations).fill(1);
-  const generateFreq = a1Freq => [a1Freq, 1 - a1Freq];
-  let data = [[], [], [], []]; // Initialize to array with 4 arrays
-  let hosts = generateFreq(Math.random());
-  let parasites = generateFreq(Math.random());
+const Ne = harmonicMean(Array(N*2).fill(N));
 
-  data.forEach((x, i, a) => a[i].push(i > 2 ? hosts[i%2] : parasites[i%2]));
-
-  for(let i = 0; i < generations; i += 1) {
-      hosts = selection(hosts, parasites, true);
-      parasites = selection(parasites, hosts);
-      data.forEach((x, i, a) => a[i].push(i > 2 ? hosts[i%2] : parasites[i%2]));
-  }
-
-  drawLineChart(data, "Generation", "p", []);
-}
-
-runVisualization();
+drawLineChart(Array(simulations).fill(1).map(getSimulation),'Generation','p',['Eff. Population Size:',Ne,'Generations:',generations]);
